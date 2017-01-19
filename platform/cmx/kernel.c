@@ -8,6 +8,7 @@
 #include <thd.h>
 #include "stm32f7xx_hal.h"
 #include "core_cm7.h"
+#include "boot_comp.h"
 
 int var=0;
 
@@ -28,7 +29,7 @@ timer_init(void)
 	SysTick->LOAD=1000;
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk;
 */
-	var=SysTick_Config(1000);
+	/* var=SysTick_Config(1000); */
 	/* The systick IRQ has a very high priority */
 	//NVIC_SetPriority(SysTick_IRQn,0x00);
 }
@@ -73,18 +74,21 @@ void SysTick_Handler(void)
 	var=1;
 }
 
+extern void cos_init(void);
+
 void
 main(void)
 {
+	cos_init();
 	/* Currently these are fixed for cortex-Mx */
 	//timer_init();
     mpu_init();
 	/* Test the timer */
-	while(1)
+	/*while(1)
 	{
 		if(var==1)
 			var=0;
-	}
+	}*/
 
 	kern_memory_setup();
 
@@ -96,8 +100,8 @@ main(void)
 	thd_init();
 	//paging_init();
 
-	/* kern_boot_comp(); */
-	/* kern_boot_upcall(); */
+	kern_boot_comp();
+	kern_boot_upcall();
 	/* should not get here... */
 	khalt();
 }
@@ -105,6 +109,30 @@ main(void)
 void
 khalt(void)
 {
-	//printk("Shutting down...\n");
+	printk("Shutting down...\n");
 	while(1);
 }
+
+void
+printk(const char *fmt, ...)
+{
+
+}
+
+void
+chal_tls_update(vaddr_t vaddr)
+{
+
+}
+
+void
+chal_timer_set(cycles_t cycles)
+{  }
+
+void
+chal_timer_disable(void)
+{  }
+
+int
+chal_cyc_usec(void)
+{ return 1000; }

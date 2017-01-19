@@ -9,7 +9,7 @@
  */
 static inline void
 __userregs_setret(struct pt_regs *regs, unsigned long ret)
-{ regs->r0 = ret; }
+{ regs->r4 = ret; }
 static inline unsigned long
 __userregs_getsp(struct pt_regs *regs)
 { return regs->r12; }
@@ -28,14 +28,14 @@ __userregs_getinvret(struct pt_regs *regs)
 static inline void
 __userregs_set(struct pt_regs *regs, unsigned long ret, unsigned long r13_sp, unsigned long r15_pc)
 {
-	regs->r0 = ret;
+	regs->r4 = ret;
 	regs->r13_sp = regs->r2 = r13_sp;
 	regs->r15_pc = regs->r3 = r15_pc;
 }
 static inline void
 __userregs_setretvals(struct pt_regs *regs, unsigned long ret, unsigned long ret1, unsigned long ret2)
 {
-	regs->r0 = ret;
+	regs->r4 = ret;
 	regs->r10 = ret1;
 	regs->r11 = ret2;
 }
@@ -92,7 +92,7 @@ copy_all_regs(struct pt_regs *from, struct pt_regs *to)
 	COPY_REG(r5);
 	COPY_REG(r6);
 	COPY_REG(r7);
-	COPY_REG(orig_r0);
+	COPY_REG(orig_r4);
 	COPY_REG(r15_pc);
 	COPY_REG(r8);
 	COPY_REG(flags);

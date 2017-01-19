@@ -43,8 +43,8 @@ struct pt_regs {
 };*/
 
 struct pt_regs {
+        int orig_r4;
         int r0;
-        int orig_r0;
         int r1;
         int r2;
         int r3;
